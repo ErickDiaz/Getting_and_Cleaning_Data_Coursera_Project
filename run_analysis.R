@@ -1,5 +1,5 @@
 ################ LIBRARIES ##################
-
+library(data.table)
 
 ################ LOAD DATA ##################
 data_path <- "UCI HAR Dataset/train/"
@@ -45,13 +45,23 @@ X_data <- X_data_raw[,filter_vector]
 #################################################################################
 ### 3. Uses descriptive activity names to name the activities in the data set ###
 #################################################################################
-y_data <- merge(y_data,activity_names)
+y_data <- merge(y_data_raw,activity_names)
 
 ##############################################################################
 ### 4. Appropriately labels the data set with descriptive variable names. ####
 ##############################################################################
+## y_data
 names(y_data) <- c("activity_id","activity_name")
+## subject_data
 names(subject_data) <- "subject"
+## X_data
+X_data_col_names <- colnames(X_data)
+X_data_col_names <- gsub(  "-", "_",X_data_col_names)
+X_data_col_names <- gsub(  "[()]", "",X_data_col_names)
+X_data_col_names <- gsub(  "mean", "MEAN",X_data_col_names)
+X_data_col_names <- gsub(  "std", "STD",X_data_col_names)
+
+names(X_data) <- X_data_col_names
 
 ########################################################################################################################################################
 ### 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject ###
