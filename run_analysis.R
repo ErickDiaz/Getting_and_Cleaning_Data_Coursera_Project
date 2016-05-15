@@ -66,3 +66,14 @@ names(X_data) <- X_data_col_names
 ########################################################################################################################################################
 ### 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject ###
 ########################################################################################################################################################
+tidy_data <- cbind(X_data,y_data,subject_data)
+
+groupBy <- list(tidy_data$activity_name,tidy_data$subject)
+data_grouped <- aggregate(tidy_data, by =  groupBy, mean)
+
+names(data_grouped)[c(1,2)] <- c("Activity","Subject")
+means_tidy_data <- data_grouped[,1:66]
+
+
+## Write the output file in the current working directory
+write.table(means_tidy_data ,file = "means_data_output.txt",row.names = FALSE)
